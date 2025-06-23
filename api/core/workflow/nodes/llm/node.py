@@ -197,6 +197,7 @@ class LLMNode(BaseNode[LLMNodeData]):
                 app_id=self.app_id,
                 node_data_memory=self.node_data.memory,
                 model_instance=model_instance,
+                default_enabled=True
             )
 
             query = None
