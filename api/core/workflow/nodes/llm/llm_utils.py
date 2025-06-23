@@ -86,9 +86,9 @@ def fetch_files(variable_pool: VariablePool, selector: Sequence[str]) -> Sequenc
 
 
 def fetch_memory(
-    variable_pool: VariablePool, app_id: str, node_data_memory: Optional[MemoryConfig], model_instance: ModelInstance
+    variable_pool: VariablePool, app_id: str, node_data_memory: Optional[MemoryConfig], model_instance: ModelInstance, default_enabled: bool = False
 ) -> Optional[TokenBufferMemory]:
-    if not node_data_memory:
+    if not node_data_memory or (not default_enabled and (not node_data_memory.window or not node_data_memory.window.enabled)):
         return None
 
     # get conversation id
