@@ -20,3 +20,7 @@ class SegmentGroup(Segment):
 
     def to_object(self):
         return [segment.to_object() for segment in self.value]
+
+    @property
+    def json_text(self):
+        return "".join([segment.text if segment.text else "null" for segment in self.value])
