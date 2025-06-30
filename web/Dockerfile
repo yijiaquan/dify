@@ -1,6 +1,6 @@
 # base image
 FROM node:22-alpine3.21 AS base
-LABEL maintainer="takatost@gmail.com"
+LABEL maintainer="yijiaquan@supermap.com"
 
 # if you located in China, you can use aliyun mirror to speed up
 # RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
