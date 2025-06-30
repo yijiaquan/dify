@@ -172,12 +172,14 @@ class Executor:
                 case "raw-text":
                     if len(data) != 1:
                         raise RequestBodyError("raw-text body type should have exactly one item")
-                    self.content = self.variable_pool.convert_template(data[0].value).text
+                    self.content = self.variable_pool.convert_template(data[0].value).json_text
                 case "json":
                     if len(data) != 1:
                         raise RequestBodyError("json body type should have exactly one item")
-                    json_string = self.variable_pool.convert_template(data[0].value).text
+                    json_string = self.variable_pool.convert_template(data[0].value).json_text
                     try:
+                        # 修复非法空白字符
+                        json_string = json_string.replace('\xa0', ' ')
                         json_object = json.loads(json_string, strict=False)
                     except json.JSONDecodeError as e:
                         raise RequestBodyError(f"Failed to parse JSON: {json_string}") from e

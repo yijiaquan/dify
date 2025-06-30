@@ -46,6 +46,10 @@ class Segment(BaseModel):
         """
         return sys.getsizeof(self.value)
 
+    @property
+    def json_text(self) -> str:
+        return json.dumps(self.value, ensure_ascii=False, indent=2) if self.value is not None else "null"
+
     def to_object(self) -> Any:
         return self.value
 
