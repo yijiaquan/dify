@@ -1,3 +1,5 @@
+import json
+
 from .segments import Segment
 from .types import SegmentType
 
@@ -20,3 +22,10 @@ class SegmentGroup(Segment):
 
     def to_object(self):
         return [segment.to_object() for segment in self.value]
+
+    @property
+    def json_text(self):
+        return ''.join([
+            seg.text if ".structured_output." not in seg.text and seg.text else "null"
+            for seg in self.value
+        ])
