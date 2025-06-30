@@ -1,5 +1,3 @@
-import json
-
 from .segments import Segment
 from .types import SegmentType
 
