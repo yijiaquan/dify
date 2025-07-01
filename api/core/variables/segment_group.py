@@ -23,7 +23,7 @@ class SegmentGroup(Segment):
 
     @property
     def json_text(self):
-        return ''.join([
-            seg.text if ".structured_output." not in seg.text and seg.text else "null"
-            for seg in self.value
-        ])
+        return "".join([
+            segment.text if segment.text and (not ".structured_output." in segment.text) and segment.text != '"' else "null"
+            for segment in self.value
+        ]).replace('\xa0', ' ').replace('"null"', "null")
