@@ -7,7 +7,7 @@ WORKDIR /app/api
 # Install uv
 ENV UV_VERSION=0.7.11
 
-RUN pip install --no-cache-dir uv==${UV_VERSION}
+RUN pip install --no-cache-dir uv==${UV_VERSION} -i https://mirrors.aliyun.com/pypi/simple/
 
 
 FROM base AS packages
