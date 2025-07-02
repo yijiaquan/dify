@@ -1,16 +1,13 @@
 import io
 import logging
 import uuid
-from collections.abc import Generator
 from typing import Optional
 
-from flask import Response, stream_with_context
 from werkzeug.datastructures import FileStorage
 
 from constants import AUDIO_EXTENSIONS
 from core.model_manager import ModelManager
 from core.model_runtime.entities.model_entities import ModelType
-from extensions.ext_database import db
 from models.model import App, AppMode, AppModelConfig, Message, MessageStatus
 from services.errors.audio import (
     AudioTooLargeServiceError,
@@ -19,7 +16,6 @@ from services.errors.audio import (
     ProviderNotSupportTextToSpeechServiceError,
     UnsupportedAudioTypeServiceError,
 )
-from services.workflow_service import WorkflowService
 
 FILE_SIZE = 30
 FILE_SIZE_LIMIT = FILE_SIZE * 1024 * 1024
@@ -78,36 +74,35 @@ class AudioService:
         voice: Optional[str] = None,
         end_user: Optional[str] = None,
         message_id: Optional[str] = None,
-        is_draft: bool = False,
     ):
+        from collections.abc import Generator
+
+        from flask import Response, stream_with_context
+
         from app import app
+        from extensions.ext_database import db
 
-        def invoke_tts(text_content: str, app_model: App, voice: Optional[str] = None, is_draft: bool = False):
+        def invoke_tts(text_content: str, app_model: App, voice: Optional[str] = None):
             with app.app_context():
-                if voice is None:
-                    if app_model.mode in {AppMode.ADVANCED_CHAT.value, AppMode.WORKFLOW.value}:
-                        if is_draft:
-                            workflow = WorkflowService().get_draft_workflow(app_model=app_model)
-                        else:
-                            workflow = app_model.workflow
-                        if (
-                            workflow is None
-                            or "text_to_speech" not in workflow.features_dict
-                            or not workflow.features_dict["text_to_speech"].get("enabled")
-                        ):
-                            raise ValueError("TTS is not enabled")
+                if app_model.mode in {AppMode.ADVANCED_CHAT.value, AppMode.WORKFLOW.value}:
+                    workflow = app_model.workflow
+                    if workflow is None:
+                        raise ValueError("TTS is not enabled")
 
-                        voice = workflow.features_dict["text_to_speech"].get("voice")
-                    else:
-                        if not is_draft:
-                            if app_model.app_model_config is None:
-                                raise ValueError("AppModelConfig not found")
-                            text_to_speech_dict = app_model.app_model_config.text_to_speech_dict
+                    features_dict = workflow.features_dict
+                    if "text_to_speech" not in features_dict or not features_dict["text_to_speech"].get("enabled"):
+                        raise ValueError("TTS is not enabled")
 
-                            if not text_to_speech_dict.get("enabled"):
-                                raise ValueError("TTS is not enabled")
+                    voice = features_dict["text_to_speech"].get("voice") if voice is None else voice
+                else:
+                    if app_model.app_model_config is None:
+                        raise ValueError("AppModelConfig not found")
+                    text_to_speech_dict = app_model.app_model_config.text_to_speech_dict
 
-                            voice = text_to_speech_dict.get("voice")
+                    if not text_to_speech_dict.get("enabled"):
+                        raise ValueError("TTS is not enabled")
+
+                    voice = text_to_speech_dict.get("voice") if voice is None else voice
 
                 model_manager = ModelManager()
                 model_instance = model_manager.get_default_model_instance(
@@ -141,14 +136,14 @@ class AudioService:
                 return None
 
             else:
-                response = invoke_tts(text_content=message.answer, app_model=app_model, voice=voice, is_draft=is_draft)
+                response = invoke_tts(message.answer, app_model=app_model, voice=voice)
                 if isinstance(response, Generator):
                     return Response(stream_with_context(response), content_type="audio/mpeg")
                 return response
         else:
             if text is None:
                 raise ValueError("Text is required")
-            response = invoke_tts(text_content=text, app_model=app_model, voice=voice, is_draft=is_draft)
+            response = invoke_tts(text, app_model, voice)
             if isinstance(response, Generator):
                 return Response(stream_with_context(response), content_type="audio/mpeg")
             return response
