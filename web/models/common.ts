@@ -302,3 +302,19 @@ export type StructuredOutputRulesResponse = {
   output: string
   error?: string
 }
+
+export enum PluginPlatform {
+  x86_64 = 'manylinux2014_x86_64',
+  aarch64 = 'manylinux2014_aarch64',
+}
+
+export const getDisplayNameFromPluginPlatform = (platform: PluginPlatform): string => {
+  switch (platform) {
+    case PluginPlatform.x86_64:
+      return 'x86_64'
+    case PluginPlatform.aarch64:
+      return 'aarch64'
+    default:
+      return platform
+  }
+}

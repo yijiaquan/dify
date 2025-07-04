@@ -43,6 +43,8 @@ const translation = {
       info: 'Eklenti Bilgileri',
       viewDetail: 'ayrıntılara bakın',
       update: 'Güncelleştirmek',
+      downloadAmd: 'AMD sürümünü indirin',
+      downloadArm: 'ARM sürümünü indirin',
     },
     toolSelector: {
       uninstalledContent: 'Bu eklenti yerel/GitHub deposundan yüklenir. Lütfen kurulumdan sonra kullanın.',

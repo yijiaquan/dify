@@ -59,6 +59,8 @@ const translation = {
       checkUpdate: 'Check Update',
       viewDetail: 'View Detail',
       remove: 'Remove',
+      downloadAmd: 'Download AMD 64 version',
+      downloadArm: 'Download ARM 64 version',
     },
     actionNum: '{{num}} {{action}} INCLUDED',
     strategyNum: '{{num}} {{strategy}} INCLUDED',
