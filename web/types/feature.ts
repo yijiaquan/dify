@@ -119,4 +119,6 @@ export enum DatasetAttr {
   DATA_PUBLIC_ENABLE_WEBSITE_JINAREADER = 'data-public-enable-website-jinareader',
   DATA_PUBLIC_ENABLE_WEBSITE_FIRECRAWL = 'data-public-enable-website-firecrawl',
   DATA_PUBLIC_ENABLE_WEBSITE_WATERCRAWL = 'data-public-enable-website-watercrawl',
+  DATA_PUBLIC_PLUGIN_INSTALL_AMD_API_PREFIX = 'data-marketplace-install-amd-api',
+  DATA_PUBLIC_PLUGIN_INSTALL_ARM_API_PREFIX = 'data-marketplace-install-arm-api',
 }

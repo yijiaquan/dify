@@ -59,6 +59,8 @@ const translation = {
       checkUpdate: '检查更新',
       viewDetail: '查看详情',
       remove: '移除',
+      downloadAmd: '下载 AMD 版本',
+      downloadArm: '下载 ARM 版本',
     },
     actionNum: '包含 {{num}} 个 {{action}}',
     strategyNum: '包含 {{num}} 个 {{strategy}}',
