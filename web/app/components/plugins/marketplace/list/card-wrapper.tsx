@@ -1,7 +1,7 @@
 'use client'
 import { useTheme } from 'next-themes'
 import { RiArrowRightUpLine } from '@remixicon/react'
-import { getPluginLinkInMarketplace } from '../utils'
+import { getPluginDetailLinkInMarketplace, getPluginLinkInMarketplace } from '../utils'
 import Card from '@/app/components/plugins/card'
 import CardMoreInfo from '@/app/components/plugins/card/card-more-info'
 import type { Plugin } from '@/app/components/plugins/types'
@@ -122,7 +122,7 @@ const CardWrapper = ({
   return (
     <a
       className='group relative inline-block cursor-pointer rounded-xl'
-      href={getPluginLinkInMarketplace(plugin)}
+      href={getPluginDetailLinkInMarketplace(plugin)}
     >
       <Card
         key={plugin.name}
