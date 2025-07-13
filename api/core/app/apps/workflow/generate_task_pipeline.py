@@ -572,8 +572,9 @@ class WorkflowAppGenerateTaskPipeline:
         elif invoke_from == InvokeFrom.WEB_APP:
             created_from = WorkflowAppLogCreatedFrom.WEB_APP
         else:
-            # not save log for debugging
-            return
+            # old not save log for debugging
+            # save log for debugging
+            created_from = WorkflowAppLogCreatedFrom.DEBUGGING
 
         workflow_app_log = WorkflowAppLog()
         workflow_app_log.tenant_id = workflow_run.tenant_id

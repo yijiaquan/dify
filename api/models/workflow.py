@@ -785,6 +785,7 @@ class WorkflowAppLogCreatedFrom(Enum):
     SERVICE_API = "service-api"
     WEB_APP = "web-app"
     INSTALLED_APP = "installed-app"
+    DEBUGGING = "debugging"
 
     @classmethod
     def value_of(cls, value: str) -> "WorkflowAppLogCreatedFrom":
