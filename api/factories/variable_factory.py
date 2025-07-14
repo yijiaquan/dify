@@ -122,7 +122,7 @@ def build_segment(value: Any, /) -> Segment:
     if value is None:
         return NoneSegment()
     if isinstance(value, str):
-        return StringSegment(value=value)
+        return StringSegment(value=value) if ".structured_output" not in value else NoneSegment()
     if isinstance(value, int):
         return IntegerSegment(value=value)
     if isinstance(value, float):
